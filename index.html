@@ -7,9 +7,39 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <button topic="sparrow">
+        Jack Sparrow
+    </button>
+    <button topic="splode">
+        Explosions
+    </button>
+    <button topic="himym">
+        How I Met Your Mother
+    </button>
+    <div id="gifs"></div>
 <script>
-    var queryURL = 0;
+    $("button").on("click", function(){
+    var topics = $(this).attr("topic");
+    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+        topics + "&api_key=dc6zaTOxFJmzC&limit=10";
 
+    $.ajax({
+        url: queryURL,
+        method: "GET",
+    }).then(function(response){
+        console.log(response);
+        
+        var results = response.data;
+
+        for (var x = 0; x < results.length; x++){
+            var topicDiv = $("<div>");
+            var topicImg = $("<img>");
+            topicImg.attr("src", results[x].images.fixed_height.url);
+            topicDiv.append(topicImg);
+            $("gifs").prepend(topicDiv);
+        }
+    });
+    })
 </script>
 </body>
 </html>
