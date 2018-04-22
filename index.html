@@ -7,21 +7,48 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <button topic="sparrow">
-        Jack Sparrow
-    </button>
-    <button topic="splode">
-        Explosions
-    </button>
-    <button topic="himym">
-        How I Met Your Mother
-    </button>
+    <div class="buttons">
+        <button topic="sparrow">
+            Jack Sparrow
+        </button>
+        <button topic="explosion">
+            Explosions
+        </button>
+        <button topic="himym">
+            How I Met Your Mother
+        </button>
+    </div>
+    <div class="userButtons">
+
+    </div>
+        
+        <form>
+            Enter your own topics here &nbsp; &nbsp;
+            <input type="text" id="input">
+            </form>
+        <button id="submit">
+            Submit
+            </button>
     <div id="gifs"></div>
 <script>
-    $("button").on("click", function(){
+    $("#submit").on("click", function(){
+        var userTopic = $("#input").val().trim();
+        console.log(userTopic);
+        $(".userButtons").append("<button topic=" + userTopic + ">" + userTopic + "</button>");
+    });
+
+    $(".buttons").on("click", function(){
     var topics = $(this).attr("topic");
     var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
         topics + "&api_key=dc6zaTOxFJmzC&limit=10";
+
+    $(".userButtons").on("click", function(){
+    var userTopics = $(this).attr("topic");
+    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+        userTopics + "&api_key=dc6zaTOxFJmzC&limit=10";
+    });
+
+    console.log(topics);
 
     $.ajax({
         url: queryURL,
@@ -36,10 +63,10 @@
             var topicImg = $("<img>");
             topicImg.attr("src", results[x].images.fixed_height.url);
             topicDiv.append(topicImg);
-            $("gifs").prepend(topicDiv);
+            $("#gifs").prepend(topicDiv);
         }
     });
-    })
+    });
 </script>
 </body>
 </html>
